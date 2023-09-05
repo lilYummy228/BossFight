@@ -33,8 +33,8 @@ namespace BossFight
             int waterMinHealing = 20;
             int waterMaxHealing = 41;
             int waterHealing = 0;
-            int bloodMinDamage = 40;
-            int bloodMaxDamage = 81;
+            int bloodMinDamage = 50;
+            int bloodMaxDamage = 91;
             int elecroMinDamage = 250;
             int electroMaxDamage = 401;
 
@@ -61,7 +61,7 @@ namespace BossFight
                     $"высасывает у противника часть здоровья и восстанавливает его вам.\n" +
                     $"3. RainDrop - заставляет тучи сгуститься над вами, выпуская ливень.\n4. Electricity (активен только после RainDrop) " +
                     $"- заставляет небеса развергнуться запуская из неба вспышки молний в противника.");
-                Console.Write("Какое действие вы хотите выполнить? ");
+                Console.Write("\nКакое действие вы хотите выполнить? ");
                 string chosenSpell = Console.ReadLine();
 
                 switch (chosenSpell.ToLower())
@@ -83,7 +83,7 @@ namespace BossFight
                             int bloodDamage = random.Next(bloodMinDamage, bloodMaxDamage);
                             bossHP -= bloodDamage;
                             heroHP += bloodDamage;
-                            Console.WriteLine($"Вы чувствуете вкус крови...\n({bloodDamage} урона и лечения кровью)");
+                            Console.WriteLine($"\nВы чувствуете вкус крови...\n({bloodDamage} урона и лечения кровью)");
                             Console.ReadKey();
                             Console.Clear();
                         }
@@ -100,7 +100,7 @@ namespace BossFight
                     case CommandRainDrop:
                         isOnFire = false;
                         isOnWater = true;
-                        Console.WriteLine("Пошел дождь...");
+                        Console.WriteLine("\nПошел дождь...");
                         Console.ReadKey();
                         Console.Clear();
                         break;
@@ -113,7 +113,7 @@ namespace BossFight
                             bossHP -= electroDamage;
                             isOnFire = true;
                             isOnWater = false;
-                            Console.WriteLine($"Молния застала вашего противника врасплох...\n({electroDamage} урона электричеством)");
+                            Console.WriteLine($"\nМолния застала вашего противника врасплох...\n({electroDamage} урона электричеством)");
                             Console.ReadKey();
                             Console.Clear();
                         }
