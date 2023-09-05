@@ -29,8 +29,10 @@ namespace BossFight
             int fireballMaxDamage = 201;
             int burningMinDamage = 20;
             int burningMaxDamage = 41;
+            int burningDamage = 0;
             int waterMinHealing = 20;
             int waterMaxHealing = 41;
+            int waterHealing = 0;
             int bloodMinDamage = 40;
             int bloodMaxDamage = 81;
             int elecroMinDamage = 250;
@@ -45,11 +47,13 @@ namespace BossFight
 
                 if (isOnFire)
                 {
-                    Console.WriteLine("Статус: под огнем\n");
+                    Console.WriteLine("Статус: под огнем");
+                    Console.WriteLine($"Урон горением: {burningDamage} урона\n");
                 }
                 else if (isOnWater)
                 {
-                    Console.WriteLine("Статус: под дождем\n");
+                    Console.WriteLine("Статус: под дождем");
+                    Console.WriteLine($"Лечение от воды: {waterHealing} здоровья\n");
                 }
 
                 Console.WriteLine($"1. FireBall - запускает огненный шар в противника, отчего он получает урон огнем и заставляет гореть," +
@@ -67,7 +71,7 @@ namespace BossFight
                         bossHP -= fireballDamage;
                         isOnFire = true;
                         isOnWater = false;
-                        Console.WriteLine($"Вы запускаете огненный шар в противника...\n({fireballDamage})");
+                        Console.WriteLine($"\nВы запускаете огненный шар в противника...\n({fireballDamage} урона огнем)");
                         Console.ReadKey();
                         Console.Clear();
                         break;
@@ -79,7 +83,7 @@ namespace BossFight
                             int bloodDamage = random.Next(bloodMinDamage, bloodMaxDamage);
                             bossHP -= bloodDamage;
                             heroHP += bloodDamage;
-                            Console.WriteLine($"Вы чувствуете вкус крови...\n({bloodDamage})");
+                            Console.WriteLine($"Вы чувствуете вкус крови...\n({bloodDamage} урона и лечения кровью)");
                             Console.ReadKey();
                             Console.Clear();
                         }
@@ -109,7 +113,7 @@ namespace BossFight
                             bossHP -= electroDamage;
                             isOnFire = true;
                             isOnWater = false;
-                            Console.WriteLine($"Молния застала вашего противника врасплох...\n({electroDamage})");
+                            Console.WriteLine($"Молния застала вашего противника врасплох...\n({electroDamage} урона электричеством)");
                             Console.ReadKey();
                             Console.Clear();
                         }
@@ -140,11 +144,13 @@ namespace BossFight
 
                     if (isOnFire)
                     {
-                        bossHP -= random.Next(burningMinDamage, burningMaxDamage);
+                        burningDamage = random.Next(burningMinDamage, burningMaxDamage);
+                        bossHP -= burningDamage;
                     }
                     else if (isOnWater)
                     {
-                        heroHP += random.Next(waterMinHealing, waterMaxHealing);
+                        waterHealing = random.Next(waterMinHealing, waterMaxHealing);
+                        heroHP += waterHealing;
                     }
                 }
                 else
