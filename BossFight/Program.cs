@@ -15,14 +15,15 @@ namespace BossFight
             const string CommandRainDrop = "raindrop";
             const string CommandElectricity = "electricity";
 
+            Random random = new Random();
             bool gameOver = true;
             bool isOnFire = false;
             bool isOnWater = false;
             bool isRightSpell = true;
-            int bossHP = 1000;
+            int bossHP = random.Next(1000, 1201);
             int bossMinDamage = 80;
             int bossMaxDamage = 121;
-            int heroHP = 500;
+            int heroHP = random.Next(500, 701);
             int heroWounded = heroHP / 2;
             int fireballMinDamage = 100;
             int fireballMaxDamage = 221;
@@ -35,7 +36,6 @@ namespace BossFight
             int elecroMinDamage = 250;
             int electroMaxDamage = 401;
 
-            Random randomDamage = new Random();
 
             Console.WriteLine("Boss Fight\nУр'Шалах Повелитель демонов");
 
@@ -63,7 +63,7 @@ namespace BossFight
                 switch (chosenSpell.ToLower())
                 {
                     case CommandFireBall:
-                        bossHP -= randomDamage.Next(fireballMinDamage, fireballMaxDamage);
+                        bossHP -= random.Next(fireballMinDamage, fireballMaxDamage);
                         isOnFire = true;
                         isOnWater = false;
                         Console.WriteLine("Вы запускаете огненный шар в противника...");
@@ -75,7 +75,7 @@ namespace BossFight
 
                         if (heroHP <= heroWounded)
                         {
-                            int bloodDamage = randomDamage.Next(bloodMinDamage, bloodMaxDamage);
+                            int bloodDamage = random.Next(bloodMinDamage, bloodMaxDamage);
                             bossHP -= bloodDamage;
                             heroHP += bloodDamage;
                             Console.WriteLine("Вы чувствуете вкус крови...");
@@ -103,7 +103,7 @@ namespace BossFight
 
                         if (isOnWater == true)
                         {
-                            bossHP -= randomDamage.Next(elecroMinDamage, electroMaxDamage);
+                            bossHP -= random.Next(elecroMinDamage, electroMaxDamage);
                             isOnFire = true;
                             isOnWater = false;
                             Console.WriteLine("Молния застала вашего противника врасплох...");
@@ -130,21 +130,22 @@ namespace BossFight
 
                 if (isRightSpell)
                 {
-                    heroHP -= randomDamage.Next(bossMinDamage, bossMaxDamage);
+                    heroHP -= random.Next(bossMinDamage, bossMaxDamage);
+
+                    if (isOnFire)
+                    {
+                        bossHP -= random.Next(burningMinDamage, burningMaxDamage);
+                    }
+                    else if (isOnWater)
+                    {
+                        heroHP += random.Next(waterMinHealing, waterMaxHealing);
+                    }
                 }
                 else
                 {
                     isRightSpell = true;
                 }
 
-                if (isOnFire)
-                {
-                    bossHP -= randomDamage.Next(burningMinDamage, burningMaxDamage);
-                }
-                else if (isOnWater)
-                {
-                    heroHP += randomDamage.Next(waterMinHealing, waterMaxHealing);
-                }
 
                 if (heroHP <= 0 && bossHP <= 0)
                 {
