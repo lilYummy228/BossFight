@@ -141,12 +141,10 @@ namespace BossFight
                 {
                     bossHP -= randomDamage.Next(burningMinDamage, burningMaxDamage);
                 }
-
-                if (isOnWater)
+                else if (isOnWater)
                 {
                     heroHP += randomDamage.Next(waterMinHealing, waterMaxHealing);
                 }
-
 
                 if (heroHP <= 0 && bossHP <= 0)
                 {
