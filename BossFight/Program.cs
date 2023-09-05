@@ -18,15 +18,30 @@ namespace BossFight
             bool gameOver = true;
             bool isOnFire = false;
             bool isOnWater = false;
+            bool isRightSpell = true;
             int bossHP = 1000;
+            int bossMinDamage = 80;
+            int bossMaxDamage = 121;
             int heroHP = 500;
+            int heroWounded = heroHP / 2;
+            int fireballMinDamage = 100;
+            int fireballMaxDamage = 221;
+            int burningMinDamage = 20;
+            int burningMaxDamage = 41;
+            int waterMinHealing = 20;
+            int waterMaxHealing = 41;
+            int bloodMinDamage = 20;
+            int bloodMaxDamage = 71;
+            int elecroMinDamage = 250;
+            int electroMaxDamage = 401;
+
             Random randomDamage = new Random();
 
             Console.WriteLine("Boss Fight\nУр'Шалах Повелитель демонов");
 
             while (gameOver)
             {
-                Console.WriteLine($"\nЗдоровье Ур'Шалаха: {bossHP}\nЗдоровье героя: {heroHP}\n");
+                Console.WriteLine($"\nЗдоровье Ур'Шалаха: {bossHP} HP\nЗдоровье героя: {heroHP} HP\n");
 
                 if (isOnFire)
                 {
@@ -48,7 +63,7 @@ namespace BossFight
                 switch (chosenSpell.ToLower())
                 {
                     case CommandFireBall:
-                        bossHP -= randomDamage.Next(120, 221);
+                        bossHP -= randomDamage.Next(fireballMinDamage, fireballMaxDamage);
                         isOnFire = true;
                         isOnWater = false;
                         Console.WriteLine("Вы запускаете огненный шар в противника...");
@@ -58,10 +73,11 @@ namespace BossFight
 
                     case CommandBloodThirst:
 
-                        if (heroHP <= 250)
+                        if (heroHP <= heroWounded)
                         {
-                            bossHP -= randomDamage.Next(50, 101);
-                            heroHP += randomDamage.Next(50, 101);
+                            int bloodDamage = randomDamage.Next(bloodMinDamage, bloodMaxDamage);
+                            bossHP -= bloodDamage;
+                            heroHP += bloodDamage;
                             Console.WriteLine("Вы чувствуете вкус крови...");
                             Console.ReadKey();
                             Console.Clear();
@@ -87,7 +103,7 @@ namespace BossFight
 
                         if (isOnWater == true)
                         {
-                            bossHP -= randomDamage.Next(250, 451);
+                            bossHP -= randomDamage.Next(elecroMinDamage, electroMaxDamage);
                             isOnFire = true;
                             isOnWater = false;
                             Console.WriteLine("Молния застала вашего противника врасплох...");
@@ -105,39 +121,47 @@ namespace BossFight
 
                     default:
                         Console.WriteLine("Неверное заклинание!");
+
                         Console.ReadKey();
                         Console.Clear();
+                        isRightSpell = false;
                         break;
+                }
+
+                if (isRightSpell)
+                {
+                    heroHP -= randomDamage.Next(bossMinDamage, bossMaxDamage);
+                }
+                else
+                {
+                    isRightSpell = true;
                 }
 
                 if (isOnFire)
                 {
-                    bossHP -= randomDamage.Next(10, 21);
+                    bossHP -= randomDamage.Next(burningMinDamage, burningMaxDamage);
                 }
 
                 if (isOnWater)
                 {
-                    heroHP += randomDamage.Next(10, 21);
+                    heroHP += randomDamage.Next(waterMinHealing, waterMaxHealing);
                 }
 
-                if (heroHP > 500)
-                {
-                    heroHP = 500;
-                }
-
-                heroHP -= randomDamage.Next(50, 121);
 
                 if (heroHP <= 0 && bossHP <= 0)
                 {
                     Console.WriteLine("Вы убили Ур'Шалаха, но погибли сами...");
+                    gameOver = false;
                 }
                 else if (heroHP > 0 && bossHP <= 0)
                 {
                     Console.WriteLine("Вы уничтожили Повелителя демонов Ур'Шалаха!");
+                    gameOver = false;
                 }
                 else if (heroHP <= 0 && bossHP > 0)
                 {
                     Console.WriteLine("Вы стали очередной жертвой Повелителя демонов...");
+                    gameOver = false;
                 }
             }
         }
