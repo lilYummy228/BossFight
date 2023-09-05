@@ -21,9 +21,9 @@ namespace BossFight
             bool isOnWater = false;
             bool isRightSpell = true;
             int bossHP = random.Next(1000, 1201);
+            int heroHP = random.Next(500, 701);
             int bossMinDamage = 80;
             int bossMaxDamage = 121;
-            int heroHP = random.Next(500, 701);
             int heroWounded = heroHP / 2;
             int fireballMinDamage = 100;
             int fireballMaxDamage = 221;
@@ -31,8 +31,8 @@ namespace BossFight
             int burningMaxDamage = 41;
             int waterMinHealing = 20;
             int waterMaxHealing = 41;
-            int bloodMinDamage = 20;
-            int bloodMaxDamage = 71;
+            int bloodMinDamage = 50;
+            int bloodMaxDamage = 91;
             int elecroMinDamage = 250;
             int electroMaxDamage = 401;
 
@@ -85,6 +85,7 @@ namespace BossFight
                         else
                         {
                             Console.WriteLine("Невозможно использовать заклинание!");
+                            isRightSpell = false;
                             Console.ReadKey();
                             Console.Clear();
                         }
@@ -113,6 +114,7 @@ namespace BossFight
                         else
                         {
                             Console.WriteLine("Невозможно использовать заклинание!");
+                            isRightSpell = false;
                             Console.ReadKey();
                             Console.Clear();
                         }
@@ -121,7 +123,6 @@ namespace BossFight
 
                     default:
                         Console.WriteLine("Неверное заклинание!");
-
                         Console.ReadKey();
                         Console.Clear();
                         isRightSpell = false;
