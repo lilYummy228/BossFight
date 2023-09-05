@@ -126,6 +126,19 @@ namespace BossFight
                 }
 
                 heroHP -= randomDamage.Next(50, 121);
+
+                if (heroHP <= 0 && bossHP <= 0)
+                {
+                    Console.WriteLine("Вы убили Ур'Шалаха, но погибли сами...");
+                }
+                else if (heroHP > 0 && bossHP <= 0)
+                {
+                    Console.WriteLine("Вы уничтожили Повелителя демонов Ур'Шалаха!");
+                }
+                else if (heroHP <= 0 && bossHP > 0)
+                {
+                    Console.WriteLine("Вы стали очередной жертвой Повелителя демонов...");
+                }
             }
         }
     }
