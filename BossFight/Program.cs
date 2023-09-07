@@ -16,32 +16,19 @@ namespace BossFight
             const string CommandElectricity = "electricity";
 
             Random random = new Random();
-            bool gameOver = true;
+            bool isGameOver = true;
             bool isOnFire = false;
             bool isOnWater = false;
-            bool isRightSpell = true;
+            bool canCastSpell = true;
             int bossHP = 1000;
             int heroHP = 500;
-            int bossMinDamage = 80;
-            int bossMaxDamage = 121;
             int heroWounded = heroHP / 2;
-            int fireballMinDamage = 120;
-            int fireballMaxDamage = 201;
-            int burningMinDamage = 20;
-            int burningMaxDamage = 41;
             int burningDamage = 0;
-            int waterMinHealing = 20;
-            int waterMaxHealing = 41;
             int waterHealing = 0;
-            int bloodMinDamage = 50;
-            int bloodMaxDamage = 91;
-            int elecroMinDamage = 250;
-            int electroMaxDamage = 401;
-
 
             Console.WriteLine("Boss Fight\nУр'Шалах Повелитель демонов\n");
 
-            while (gameOver)
+            while (isGameOver)
             {
                 Console.WriteLine($"\nЗдоровье Ур'Шалаха: {bossHP} HP\nЗдоровье героя: {heroHP} HP\n");
 
@@ -56,10 +43,10 @@ namespace BossFight
                     Console.WriteLine($"Лечение от воды: {waterHealing} здоровья\n");
                 }
 
-                Console.WriteLine($"1. FireBall - запускает огненный шар в противника, отчего он получает урон огнем и заставляет гореть," +
-                    $" получая продолжительный урон.\n2. BloodThirst (активен только при отсутствии половины здоровья) - " +
+                Console.WriteLine($"1. {CommandFireBall} - запускает огненный шар в противника, отчего он получает урон огнем и заставляет гореть," +
+                    $" получая продолжительный урон.\n2. {CommandBloodThirst} (активен только при отсутствии половины здоровья) - " +
                     $"высасывает у противника часть здоровья и восстанавливает его вам.\n" +
-                    $"3. RainDrop - заставляет тучи сгуститься над вами, выпуская ливень.\n4. Electricity (активен только после RainDrop) " +
+                    $"3. {CommandRainDrop} - заставляет тучи сгуститься над вами, выпуская ливень.\n4. {CommandElectricity} (активен только после RainDrop) " +
                     $"- заставляет небеса развергнуться запуская из неба вспышки молний в противника.");
                 Console.Write("\nКакое действие вы хотите выполнить? ");
                 string chosenSpell = Console.ReadLine();
@@ -67,76 +54,72 @@ namespace BossFight
                 switch (chosenSpell.ToLower())
                 {
                     case CommandFireBall:
+                        int fireballMinDamage = 120;
+                        int fireballMaxDamage = 201;
                         int fireballDamage = random.Next(fireballMinDamage, fireballMaxDamage);
                         bossHP -= fireballDamage;
                         isOnFire = true;
                         isOnWater = false;
                         Console.WriteLine($"\nВы запускаете огненный шар в противника...\n({fireballDamage} урона огнем)");
-                        Console.ReadKey();
-                        Console.Clear();
                         break;
 
                     case CommandBloodThirst:
 
                         if (heroHP <= heroWounded)
                         {
+                            int bloodMinDamage = 50;
+                            int bloodMaxDamage = 91;
                             int bloodDamage = random.Next(bloodMinDamage, bloodMaxDamage);
                             bossHP -= bloodDamage;
                             heroHP += bloodDamage;
                             Console.WriteLine($"\nВы чувствуете вкус крови...\n({bloodDamage} урона и лечения кровью)");
-                            Console.ReadKey();
-                            Console.Clear();
                         }
                         else
                         {
                             Console.WriteLine("Невозможно использовать заклинание!");
-                            isRightSpell = false;
-                            Console.ReadKey();
-                            Console.Clear();
+                            canCastSpell = false;
                         }
-
                         break;
 
                     case CommandRainDrop:
                         isOnFire = false;
                         isOnWater = true;
                         Console.WriteLine("\nПошел дождь...");
-                        Console.ReadKey();
-                        Console.Clear();
                         break;
 
                     case CommandElectricity:
 
                         if (isOnWater == true)
                         {
+                            int elecroMinDamage = 250;
+                            int electroMaxDamage = 401;
                             int electroDamage = random.Next(elecroMinDamage, electroMaxDamage);
                             bossHP -= electroDamage;
                             isOnFire = true;
                             isOnWater = false;
                             Console.WriteLine($"\nМолния застала вашего противника врасплох...\n({electroDamage} урона электричеством)");
-                            Console.ReadKey();
-                            Console.Clear();
                         }
                         else
                         {
                             Console.WriteLine("Невозможно использовать заклинание!");
-                            isRightSpell = false;
+                            canCastSpell = false;
                             Console.ReadKey();
-                            Console.Clear();
                         }
-
                         break;
 
                     default:
                         Console.WriteLine("Неверное заклинание!");
-                        Console.ReadKey();
-                        Console.Clear();
-                        isRightSpell = false;
+                        canCastSpell = false;
                         break;
                 }
 
-                if (isRightSpell)
+                Console.ReadKey();
+                Console.Clear();
+
+                if (canCastSpell)
                 {
+                    int bossMinDamage = 80;
+                    int bossMaxDamage = 121;
                     int bossDamage = random.Next(bossMinDamage, bossMaxDamage);
                     heroHP -= bossDamage;
                     Console.Write($"Ур'Шалах нанес вам {bossDamage} урона\n");
@@ -144,35 +127,38 @@ namespace BossFight
 
                     if (isOnFire)
                     {
+                        int burningMinDamage = 20;
+                        int burningMaxDamage = 41;
                         burningDamage = random.Next(burningMinDamage, burningMaxDamage);
                         bossHP -= burningDamage;
                     }
                     else if (isOnWater)
                     {
+                        int waterMinHealing = 20;
+                        int waterMaxHealing = 41;
                         waterHealing = random.Next(waterMinHealing, waterMaxHealing);
                         heroHP += waterHealing;
                     }
                 }
                 else
                 {
-                    isRightSpell = true;
+                    canCastSpell = true;
                 }
-
 
                 if (heroHP <= 0 && bossHP <= 0)
                 {
                     Console.WriteLine("Вы убили Ур'Шалаха, но погибли сами...");
-                    gameOver = false;
+                    isGameOver = false;
                 }
                 else if (heroHP > 0 && bossHP <= 0)
                 {
                     Console.WriteLine("Вы уничтожили Повелителя демонов Ур'Шалаха!");
-                    gameOver = false;
+                    isGameOver = false;
                 }
                 else if (heroHP <= 0 && bossHP > 0)
                 {
                     Console.WriteLine("Вы стали очередной жертвой Повелителя демонов...");
-                    gameOver = false;
+                    isGameOver = false;
                 }
             }
         }
