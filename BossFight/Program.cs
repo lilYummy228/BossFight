@@ -22,7 +22,8 @@ namespace BossFight
             bool canCastSpell = true;
             int bossHP = 1000;
             int heroHP = 500;
-            int heroWounded = heroHP / 2;
+            int partOfHP = 2;
+            int heroWounded = heroHP / partOfHP;
             int burningDamage = 0;
             int waterHealing = 0;
 
