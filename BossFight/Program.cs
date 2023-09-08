@@ -20,10 +20,12 @@ namespace BossFight
             bool isOnFire = false;
             bool isOnWater = false;
             bool canCastSpell = true;
-            int bossHP = 1000;
-            int heroHP = 500;
+            int currentBossHP = 1000;
+            int bossHP = currentBossHP;
+            int currentHeroHP = 500;
+            int heroHP = currentHeroHP;
             int partOfHP = 2;
-            int heroWounded = heroHP / partOfHP;
+            int heroWounded = currentHeroHP / partOfHP;
             int burningDamage = 0;
             int waterHealing = 0;
 
@@ -31,7 +33,7 @@ namespace BossFight
 
             while (isGameOver)
             {
-                Console.WriteLine($"\nЗдоровье Ур'Шалаха: {bossHP} HP\nЗдоровье героя: {heroHP} HP\n");
+                Console.WriteLine($"\nЗдоровье Ур'Шалаха: {currentBossHP}/{bossHP} HP\nЗдоровье героя: {currentHeroHP}/{heroHP} HP\n");
 
                 if (isOnFire)
                 {
@@ -58,7 +60,7 @@ namespace BossFight
                         int fireballMinDamage = 120;
                         int fireballMaxDamage = 201;
                         int fireballDamage = random.Next(fireballMinDamage, fireballMaxDamage);
-                        bossHP -= fireballDamage;
+                        currentBossHP -= fireballDamage;
                         isOnFire = true;
                         isOnWater = false;
                         Console.WriteLine($"\nВы запускаете огненный шар в противника...\n({fireballDamage} урона огнем)");
@@ -66,13 +68,13 @@ namespace BossFight
 
                     case CommandBloodThirst:
 
-                        if (heroHP <= heroWounded)
+                        if (currentHeroHP <= heroWounded)
                         {
                             int bloodMinDamage = 50;
                             int bloodMaxDamage = 91;
                             int bloodDamage = random.Next(bloodMinDamage, bloodMaxDamage);
-                            bossHP -= bloodDamage;
-                            heroHP += bloodDamage;
+                            currentBossHP -= bloodDamage;
+                            currentHeroHP += bloodDamage;
                             Console.WriteLine($"\nВы чувствуете вкус крови...\n({bloodDamage} урона и лечения кровью)");
                         }
                         else
@@ -95,7 +97,7 @@ namespace BossFight
                             int elecroMinDamage = 250;
                             int electroMaxDamage = 401;
                             int electroDamage = random.Next(elecroMinDamage, electroMaxDamage);
-                            bossHP -= electroDamage;
+                            currentBossHP -= electroDamage;
                             isOnFire = true;
                             isOnWater = false;
                             Console.WriteLine($"\nМолния застала вашего противника врасплох...\n({electroDamage} урона электричеством)");
@@ -122,7 +124,7 @@ namespace BossFight
                     int bossMinDamage = 80;
                     int bossMaxDamage = 121;
                     int bossDamage = random.Next(bossMinDamage, bossMaxDamage);
-                    heroHP -= bossDamage;
+                    currentHeroHP -= bossDamage;
                     Console.Write($"Ур'Шалах нанес вам {bossDamage} урона\n");
                     Console.ReadKey();
 
@@ -131,14 +133,14 @@ namespace BossFight
                         int burningMinDamage = 20;
                         int burningMaxDamage = 41;
                         burningDamage = random.Next(burningMinDamage, burningMaxDamage);
-                        bossHP -= burningDamage;
+                        currentBossHP -= burningDamage;
                     }
                     else if (isOnWater)
                     {
                         int waterMinHealing = 20;
                         int waterMaxHealing = 41;
                         waterHealing = random.Next(waterMinHealing, waterMaxHealing);
-                        heroHP += waterHealing;
+                        currentHeroHP += waterHealing;
                     }
                 }
                 else
@@ -146,17 +148,17 @@ namespace BossFight
                     canCastSpell = true;
                 }
 
-                if (heroHP <= 0 && bossHP <= 0)
+                if (currentHeroHP <= 0 && currentBossHP <= 0)
                 {
                     Console.WriteLine("Вы убили Ур'Шалаха, но погибли сами...");
                     isGameOver = false;
                 }
-                else if (heroHP > 0 && bossHP <= 0)
+                else if (currentHeroHP > 0 && currentBossHP <= 0)
                 {
                     Console.WriteLine("Вы уничтожили Повелителя демонов Ур'Шалаха!");
                     isGameOver = false;
                 }
-                else if (heroHP <= 0 && bossHP > 0)
+                else if (currentHeroHP <= 0 && currentBossHP > 0)
                 {
                     Console.WriteLine("Вы стали очередной жертвой Повелителя демонов...");
                     isGameOver = false;
